@@ -1,0 +1,58 @@
+version: "3"
+
+
+# Define custom network for isolation
+networks:
+  biblivre_network:
+    driver: bridge
+    attachable: true
+    labels:
+      - description="Isolated network for biblivre services"
+
+
+services:
+  app:
+    build: .
+    ports:
+      - "$APP_HTTP_HOST_PORT:8080"
+    environment:
+      - "JAVA_OPTS=-Xms512m -Xmx2048m -XX:MaxMetaspaceSize=512m -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -Djava.awt.headless=true"
+      - "DATABASE_HOST_NAME=$DATABASE_HOST_NAME"
+      - "DATABASE_PORT=$DATABASE_HOST_PORT"
+      - "PGUSER=biblivre"
+      - "PGPASSWORD=$POSTGRES_PASSWORD"
+      - "PGDATABASE=$POSTGRES_DB"
+      - "DIGITAL_MEDIA_DAO_IMPL=$DIGITAL_MEDIA_DAO_IMPL"
+      - "SPRING_MAIL_HOST=$SPRING_MAIL_HOST"
+      - "SPRING_MAIL_PORT=$SPRING_MAIL_PORT"
+      - "SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME"
+      - "SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD"
+    depends_on:
+      - database
+    networks:
+      - biblivre_network
+  database:
+    image: quay.io/lib/postgres:16-alpine
+    ports:
+      - "$DATABASE_HOST_PORT:$POSTGRES_DEFAULT_PORT"
+    volumes:
+      - "biblivre_data:/var/lib/postgresql/data"
+      - "./sql/biblivre4.sql:/docker-entrypoint-initdb.d/populate-initial-data.sql"
+    environment:
+      - "POSTGRES_USER=biblivre"
+      - "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
+      - "POSTGRES_DB=$POSTGRES_DB"
+    networks:
+      - biblivre_network
+  web:
+    image: quay.io/lib/nginx
+    ports:
+      - "$WEB_HTTP_HOST_PORT:80"
+    volumes:
+      - "./nginx/conf.d/:/etc/nginx/conf.d/"
+    depends_on:
+      - app
+    networks:
+      - biblivre_network
+volumes:
+  biblivre_data:
