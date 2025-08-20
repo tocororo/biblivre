@@ -1,0 +1,13 @@
+# Stage 1: Build
+FROM quay.io/lib/maven:3.9.9-eclipse-temurin-21 AS mvnbuild
+WORKDIR /build
+
+# Copy POM first (for caching)
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copy source code
+COPY src src
+
+# Build
+RUN mvn clean package -DskipTests
