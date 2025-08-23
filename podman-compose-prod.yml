@@ -14,8 +14,6 @@ services:
   app:
     # build: .
     image: localhost/biblivre_app:latest
-    # ports:
-    #   - "$APP_HTTP_HOST_PORT:8080"
     environment:
       - "JAVA_OPTS=-Xms512m -Xmx2048m -XX:MaxMetaspaceSize=512m -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -Djava.awt.headless=true"
       - "DATABASE_HOST_NAME=$DATABASE_HOST_NAME"
@@ -35,8 +33,6 @@ services:
     hostname: app
   database:
     image: quay.io/lib/postgres:16-alpine
-    # ports:
-    #   - "$DATABASE_HOST_PORT:$POSTGRES_DEFAULT_PORT"
     volumes:
       - "biblivre_data:/var/lib/postgresql/data"
       - "./sql/biblivre4.sql:/docker-entrypoint-initdb.d/populate-initial-data.sql"
