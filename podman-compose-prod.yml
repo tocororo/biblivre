@@ -13,7 +13,7 @@ networks:
 services:
   app:
     # build: .
-    image: localhost/biblivre:debug
+    image: localhost/biblivre_app:latest
     environment:
       - "JAVA_OPTS=-Xms512m -Xmx2048m -XX:MaxMetaspaceSize=512m -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -Djava.awt.headless=true"
       - "DATABASE_HOST_NAME=$DATABASE_HOST_NAME"
@@ -31,10 +31,13 @@ services:
     networks:
       - biblivre_network
     hostname: app
+    ports:
+      - "$APP_HTTP_HOST_PORT:8080"
+      - "$APP_DEBUG_HOST_PORT:8000"
     deploy:
       resources:
         limits:
-          cpus: '1'
+          # cpus: '1'
           memory: 1G
     restart: always
   database:
@@ -48,11 +51,13 @@ services:
       - "POSTGRES_DB=$POSTGRES_DB"
     networks:
       - biblivre_network
+    ports:
+      - "$DATABASE_HOST_PORT:$POSTGRES_DEFAULT_PORT"
     hostname: database
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          # cpus: '0.5'
           memory: 512M
     restart: always
   web:
@@ -69,7 +74,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          # cpus: '0.5'
           memory: 512M
     restart: always
 volumes:

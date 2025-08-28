@@ -417,4 +417,9 @@ public class RestoreService {
     public void setDataSource(DataSource datasource) {
         this.datasource = datasource;
     }
+
+    @Autowired
+    public void setDigitalMediaDAO(DigitalMediaDAO digitalMediaDAO) {
+        this.digitalMediaDAO = digitalMediaDAO;
+    }
 }

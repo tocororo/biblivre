@@ -1,0 +1,15 @@
+ nano Dockerfile.build
+ 799 podman build -t localhost/biblivre6 -f Dockerfile.build .
+ 800 nano Dockerfile.build
+ 801 podman build -t localhost/biblivre6 -f Dockerfile.build .
+ 802 ll
+ 803 podman create --name temp-builder localhost/biblivre6:latest
+ 804 podman cp temp-builder:/build/target ./extracted-target
+ 805 ll
+ 806 rm -R extracted-target/
+ 807 podman cp temp-builder:/build/target ./target
+ 808 ll target/
+ 809 ll -h target/
+ 810 podman rm temp-builder
+ 811 podman images
+ 812 nano Dockerfile
