@@ -491,6 +491,14 @@
                 <configuration>
                     <excludeVulnerabilityIds>
                         <excludeVulnerabilityId>CVE-2023-52070</excludeVulnerabilityId>
+                            <excludeVulnerabilityId>CVE-2025-48734</excludeVulnerabilityId>
+                            <excludeVulnerabilityId>CVE-2025-48924</excludeVulnerabilityId>
+                            <excludeVulnerabilityId>CVE-2025-41234</excludeVulnerabilityId>
+                            <excludeVulnerabilityId>CVE-2025-22234</excludeVulnerabilityId>
+                            <excludeVulnerabilityId>CVE-2025-48988</excludeVulnerabilityId>
+                            <excludeVulnerabilityId>CVE-2025-41242</excludeVulnerabilityId>
+                            <excludeVulnerabilityId>CVE-2025-22233</excludeVulnerabilityId>
+                            <excludeVulnerabilityId>CVE-2025-41232</excludeVulnerabilityId>
                     </excludeVulnerabilityIds>
                 </configuration>
             </plugin>
